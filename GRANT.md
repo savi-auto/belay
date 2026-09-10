@@ -89,11 +89,11 @@ On other chains this category is established, such as Aave alerts and Otomato. I
 
 **Risk disclosure**
 
-- **Single price source.** Live prices come from one public feed with no fallback. If unavailable, positions show as UNPRICED rather than being silently valued at zero. A second source lands in M1.
-- **Protocol contract changes.** A redeploy or V3 breaks an adapter until updated. Mitigated by reading parameters from on-chain state and isolating each protocol in one file.
+- **Single price source.** One public feed, no fallback. If it is unavailable, positions show as UNPRICED rather than being silently valued at zero. A second source lands in M1.
+- **Protocol changes.** A redeploy breaks an adapter until updated. Mitigated by reading parameters from on-chain state and isolating each protocol in one file.
 - **Stablecoin peg.** Debt on both protocols is a stablecoin valued 1:1; a depeg would bias debt figures.
-- **Correlated collateral.** The buffer figure assumes collateral prices move together, which is true for the single-asset markets live today. It is withheld rather than guessed where it does not apply.
-- **Partial coverage.** StackingDAO and Bitflow LP exposure land in M2.
+- **Correlated collateral.** The buffer assumes collateral prices move together, true for the single-asset markets live today. It is withheld rather than guessed elsewhere; M2 models per-asset shocks.
+- **Small market.** A crawl found 58 unique borrower wallets across both protocols. Milestone targets are set against that measured population, so growth is upside rather than an assumption.
 - **Adoption.** This is read-only, so people must choose to use it. M2 alerting converts it from a page you visit into something that reaches you.
 
 **Prior grants**
@@ -232,7 +232,7 @@ Endowment can verify: the app is live at a public URL and returns correct positi
 
 **Adoption metric**
 
-At least 50 unique wallets scanned, of which at least 20 are non-team.
+At least 30 unique wallets scanned, of which at least 15 are non-team.
 
 ### M2. Alerting and full sBTC coverage. 30% / $3,000 / Dec 12, 2026
 
@@ -240,17 +240,17 @@ At least 50 unique wallets scanned, of which at least 20 are non-team.
 
 Turn the snapshot into something that reaches people before liquidation. Users set a buffer threshold and receive an alert when a position crosses it, driven by on-chain events via Chainhooks rather than polling.
 
-Extends coverage to the remaining places sBTC carries risk, namely StackingDAO positions and Bitflow LP exposure, so a wallet's Bitcoin risk view is complete rather than partial.
+Adds multi-collateral risk handling. Today a position with more than one collateral asset gets no liquidation price, because a single price shock cannot describe it. M2 models per-asset shocks so mixed-collateral borrowers get a real number instead of a blank.
 
 Publishes the write-ups of the pull-oracle staleness behaviour and the error-code-as-price failure, both of which are traps for any team reading Stacks protocol state.
 
 **Success criteria**
 
-Endowment can verify: alerts are configurable per position and delivered on a real threshold crossing, with delivery evidence; StackingDAO and Bitflow positions appear in the unified view; repo and docs updated; and at least one alert delivered to a non-team wallet ahead of a genuine risk increase.
+Endowment can verify: alerts are configurable per position and delivery is demonstrated end-to-end on a live monitored position, with evidence; multi-collateral positions return a liquidation price rather than a blank; repo and docs are updated; and the two write-ups are published.
 
 **Adoption metric**
 
-At least 150 unique non-team wallets, at least 25 alerts configured, and at least 1 alert delivered on a real threshold crossing.
+At least 20 unique non-team wallets, at least 8 alerts configured, and alert delivery demonstrated end-to-end on a live position.
 
 ### M3. Real usage and ecosystem integration. 50% / $5,000 / Jan 30, 2027 (FINAL)
 
@@ -270,12 +270,13 @@ Endowment can verify every item in the final adoption metric from public evidenc
 
 Measured from application logs and on-chain data, published in the final report:
 
-- At least 400 unique non-team wallets have viewed their risk position
-- At least 100 positions under active monitoring
-- At least $4,000,000 of collateral under monitoring, summed across monitored positions at report time (the pool already measured across Granite and Zest is $10.7M)
-- At least 100 alerts delivered to non-team users
-- At least 2 protocols or existing grantees confirming in writing that they would reference or integrate Belay
-- At least 1 documented case of a user acting on an alert, adding collateral or repaying, before liquidation and evidenced on-chain
+- At least 30 unique non-team wallets have viewed their risk position
+- At least 12 positions under active monitoring
+- At least $750,000 of collateral under monitoring, summed across monitored positions at report time
+- At least 10 alerts delivered to non-team users
+- At least 1 protocol or existing grantee confirming in writing that they would reference or integrate Belay
+
+Scale note: a full crawl of Granite and Zest found 58 unique wallets holding 62 economically meaningful positions worth $10.7M. These targets are set against that measured population, not against a hoped-for one. 12 monitored positions is roughly a fifth of every borrowing position on Stacks.
 
 ---
 
