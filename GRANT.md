@@ -69,7 +69,7 @@ Risk parameters (liquidation LTV, decimals, LTV bands) are read from each protoc
 
 Issues are handled in public on GitHub. The repo is MIT-licensed, so the adapters stay usable by the ecosystem regardless of what happens to the hosted product.
 
-Running cost is low. Stacks API reads are free from 30 October 2026. Chainhooks is free during its beta and moves to per-delivery credits after it; the watched contracts see about 67 calls a day, and re-reading positions directly is a free fallback.
+Running cost is low. Stacks API reads are free from 30 October 2026. Chainhooks is free during its beta, and its later pricing is unsettled; the watched contracts see about 67 calls a day either way, and re-reading positions directly is a free fallback.
 
 **Ecosystem fit**
 
@@ -176,7 +176,7 @@ All of these are countable, reproducible from public data, and reported publicly
 
 Hiro API access. Reads carry exponential backoff and caching, and transient 503s surfaced by a full crawl are retried. Free production access from 30 October 2026 removes the cost risk for reads.
 
-Chainhooks, used for position sync from M2, is in beta: free, with a 10-hook limit well above what Belay needs, then per-delivery credits at unpublished prices. It retries a failed delivery and then pauses the hook. A scheduled re-read of every monitored position backstops missed events and is a complete fallback on its own: re-reading 58 wallets every ten minutes averages under one request a second.
+Chainhooks, used for position sync from M2, is in beta: free, with a 10-hook limit well above what Belay needs. Post-beta pricing is unsettled, since its FAQ ties limits to subscription tiers Hiro retires on 30 October. It retries a failed delivery and then pauses the hook. A scheduled re-read of every monitored position backstops missed events and is a complete fallback on its own: re-reading 58 wallets every ten minutes averages under one request a second.
 
 A single live price source until a fallback lands in M1, and protocol redeploys breaking an adapter, mitigated by reading parameters from on-chain state.
 
