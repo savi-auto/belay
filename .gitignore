@@ -37,3 +37,7 @@ yarn-error.log*
 Thumbs.db
 *.swp
 .idea/
+
+# The grant application draft stays local: it carries portal answers and a
+# pre-submission checklist that are not meant to be public.
+GRANT.md
