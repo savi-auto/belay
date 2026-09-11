@@ -17,7 +17,7 @@ with 12 passing tests (`npm test`).
 
 A wallet holding positions in both protocols, aggregated — the worst position
 sets the wallet's true risk, because one liquidation does not care that another
-position is comfortable:
+position is comfortable (scan output, 10 September 2026):
 
 ```
 borrower        protocol     collateral         debt     LTV       liq@    drop  status
@@ -26,31 +26,18 @@ SP2JFW1CBXJD3P… Zest             $5,812         $771   13.3%    $14,622   81.1
                 ACROSS           $9,388       $1,763                      57.3%  Granite + Zest
 ```
 
-Full cross-protocol crawl: 151 addresses, 121 positions, 62 economically
-meaningful (42 Zest, 20 Granite), **$10.7M collateral against $2.95M debt**. Ten
-positions sit within 25% of liquidation holding $1,000,474 of collateral, three
-within 10%, and one is already past its threshold.
+Full cross-protocol crawl, 11 September 2026: 174 addresses, 141 positions, 72
+economically meaningful (51 Zest, 21 Granite), **$12.0M collateral against $3.42M
+debt**. Twelve positions sit within 25% of liquidation holding $1,204,781 of
+collateral, four within 10%, and two are already past their threshold.
 
 The case that makes cross-protocol the product rather than a feature — safe on
-one protocol, nearly liquidated on the other:
+one protocol, nearly liquidated on the other (scan output, 10 September 2026):
 
 ```
 SP33HRNWBTQK9G… Zest            $44,040      $34,894   79.2%      $0.24    6.8%  AT RISK
 SP33HRNWBTQK9G… Granite        $126,389      $40,295   31.9%    $37,813   51.0%  safe
                 ACROSS         $170,429      $75,189                       6.8%  worst: Zest
-```
-
-```
-live BTC $77,195   STX $0.261847
-on-chain Pyth BTC $78,473.8 — last pushed 19.9d ago  (STALE: protocols push a fresh VAA at liquidation time)
-
-borrower           collateral         debt     LTV       liq@    drop  status
---------------------------------------------------------------------------------
-SP33HRNWBTQK9G…      $126,556      $40,295   31.8%    $37,813   51.0%  safe
-SP3ND3H6QF7RW2…      $483,291      $85,910   17.8%    $21,111   72.7%  safe
-SP3QXCV3CDV124…      $180,129      $93,428   51.9%    $61,598   20.2%  watch
-SPWEA3BQ1KRXGD…      $206,396     $107,554   52.1%    $61,888   19.8%  watch
-SP21GTVTEEDQBB…       $33,273       $6,178   18.6%    $22,052   71.4%  safe
 ```
 
 Run it yourself: `npm install && node scripts/scan.mjs [address ...]`
@@ -135,7 +122,7 @@ its own classification as a cross-check, and defers to the protocol.
 
 ## Next
 
-StackingDAO and Bitflow LP positions, alerting before liquidation, and an
+Alerting before liquidation, multi-collateral risk handling, and an
 agent-readable risk endpoint.
 
 Alerting splits in two, because Chainhooks filters only fire on transactions
