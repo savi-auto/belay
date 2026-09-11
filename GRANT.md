@@ -67,9 +67,9 @@ I maintain it. The code is deliberately small, seven modules and about 710 lines
 
 Risk parameters (liquidation LTV, decimals, LTV bands) are read from each protocol's own state contract rather than hardcoded, so a governance change to a risk band is picked up automatically instead of silently making every number wrong.
 
-Issues are handled in public on GitHub. The repo is MIT-licensed, so the protocol adapters stay usable by the ecosystem regardless of what happens to the hosted product.
+Issues are handled in public on GitHub. The repo is MIT-licensed, so the adapters stay usable by the ecosystem regardless of what happens to the hosted product.
 
-Operating cost is near zero: Hiro made production API access free with no monthly caps from 30 October 2026, so this needs no paid plan and no self-hosted node.
+Running cost is low. Stacks API reads are free from 30 October 2026. Chainhooks is free during its beta and moves to per-delivery credits after it; the watched contracts see about 67 calls a day, and re-reading positions directly is a free fallback.
 
 **Ecosystem fit**
 
@@ -174,13 +174,13 @@ All of these are countable, reproducible from public data, and reported publicly
 
 **What dependencies or risks could affect delivery?**
 
-Hiro API access. Rate limits are handled with exponential backoff and caching, and a full crawl surfaced transient 503s that are now retried too. Hiro's free production access from 30 October 2026 removes the cost risk.
+Hiro API access. Reads carry exponential backoff and caching, and transient 503s surfaced by a full crawl are retried. Free production access from 30 October 2026 removes the cost risk for reads.
 
-A single live price source until a fallback lands in M1.
+Chainhooks, used for position sync from M2, is in beta: free, with a 10-hook limit well above what Belay needs, then per-delivery credits at unpublished prices. It retries a failed delivery and then pauses the hook. A scheduled re-read of every monitored position backstops missed events and is a complete fallback on its own: re-reading 58 wallets every ten minutes averages under one request a second.
 
-Protocol contract redeploys breaking an adapter, mitigated by reading parameters from on-chain state and isolating each protocol in one file.
+A single live price source until a fallback lands in M1, and protocol redeploys breaking an adapter, mitigated by reading parameters from on-chain state.
 
-Adoption is the honest risk: this is read-only, so people must choose to use it. M2 alerting addresses it directly, and I have a developer community I can bring to it.
+Adoption is the honest risk: this is read-only, so people must choose to use it. M2 alerting addresses it directly.
 
 **What support from the Stacks ecosystem would help?**
 
@@ -198,11 +198,11 @@ Milestone updates in public with reproducible numbers, including the ones that d
 
 **What happens after the grant if the work succeeds?**
 
-Coverage extends to every venue where sBTC carries risk, and the risk read becomes a service other products consume rather than only a page people visit: an agent-readable, x402-payable endpoint, following the pattern Vibewatch established for a public index.
+Coverage extends to every venue where sBTC carries liquidation risk, and the risk read becomes a service other products consume rather than only a page people visit: an agent-readable, x402-payable endpoint, following the pattern Vibewatch established for a public index.
 
 Protocols are the natural counterparty: fewer forced liquidations is worth money to a lending market, which makes protocol-sponsored coverage credible.
 
-I would rather be straight than overclaim. At grant stage Belay is a free public good with no revenue, and the grant is what gets it to where those paths can be tested with real usage behind them. Operating cost is near zero, so it does not need revenue to keep running.
+I would rather be straight than overclaim. At grant stage Belay is a free public good with no revenue, and the grant is what gets it to where those paths can be tested with real usage behind them. Reads are free and Chainhooks is optional, so it can keep running without revenue while those paths are tested.
 
 **Any other context reviewers should consider?**
 
@@ -238,7 +238,7 @@ At least 30 unique wallets scanned, of which at least 15 are non-team.
 
 **Description**
 
-Turn the snapshot into something that reaches people before liquidation. Chainhooks watches the borrow, repay, and collateral calls on Granite and Zest, so each monitored position stays current without re-scanning. Because a buffer mostly shrinks when the price moves rather than when the user acts, a separate off-chain price loop recomputes every cached position and alerts when one crosses the user's threshold.
+Turn the snapshot into something that reaches people before liquidation. Chainhooks watches the borrow, repay, and collateral calls on Granite and Zest, so each monitored position stays current without re-scanning. Because a buffer mostly shrinks when the price moves rather than when the user acts, a separate off-chain price loop recomputes every cached position and alerts when one crosses the user's threshold. A scheduled re-read of every position backstops any missed delivery.
 
 Adds multi-collateral risk handling. Today a position with more than one collateral asset gets no liquidation price, because a single price shock cannot describe it. M2 models per-asset shocks so mixed-collateral borrowers get a real number instead of a blank.
 

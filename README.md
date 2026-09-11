@@ -144,7 +144,10 @@ repay, and collateral calls to keep each position current without re-scanning;
 an off-chain price loop recomputes cached positions and fires alerts on a
 threshold crossing. Price checks make no chain calls, so they cost no Hiro rate
 limit. Chainhooks deliveries carry `Authorization: Bearer <secret>`, verified
-against the consumer secret held in `.env`.
+against the consumer secret held in `.env`. Chainhooks retries a failed
+delivery and then pauses the hook, so a scheduled re-read of every monitored
+position backstops missed events; at current scale that re-read alone is a
+complete fallback.
 
 ## License
 
