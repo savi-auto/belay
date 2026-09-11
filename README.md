@@ -138,10 +138,13 @@ its own classification as a cross-check, and defers to the protocol.
 StackingDAO and Bitflow LP positions, alerting before liquidation, and an
 agent-readable risk endpoint.
 
-Alerting is event-driven rather than polled: Chainhooks is the supported path
-for watching borrow, repay, and collateral events, and it remains fully
-supported through its API (only the Platform UI is retired, with Hiro's own
-Contract Monitoring being folded into it).
+Alerting splits in two, because Chainhooks filters only fire on transactions
+and a buffer mostly shrinks when the price moves. Chainhooks watches borrow,
+repay, and collateral calls to keep each position current without re-scanning;
+an off-chain price loop recomputes cached positions and fires alerts on a
+threshold crossing. Price checks make no chain calls, so they cost no Hiro rate
+limit. Chainhooks deliveries carry `Authorization: Bearer <secret>`, verified
+against the consumer secret held in `.env`.
 
 ## License
 

@@ -238,7 +238,7 @@ At least 30 unique wallets scanned, of which at least 15 are non-team.
 
 **Description**
 
-Turn the snapshot into something that reaches people before liquidation. Users set a buffer threshold and receive an alert when a position crosses it, driven by on-chain events via Chainhooks rather than polling.
+Turn the snapshot into something that reaches people before liquidation. Chainhooks watches the borrow, repay, and collateral calls on Granite and Zest, so each monitored position stays current without re-scanning. Because a buffer mostly shrinks when the price moves rather than when the user acts, a separate off-chain price loop recomputes every cached position and alerts when one crosses the user's threshold.
 
 Adds multi-collateral risk handling. Today a position with more than one collateral asset gets no liquidation price, because a single price shock cannot describe it. M2 models per-asset shocks so mixed-collateral borrowers get a real number instead of a blank.
 
@@ -273,7 +273,7 @@ Measured from application logs and on-chain data, published in the final report:
 - At least 30 unique non-team wallets have viewed their risk position
 - At least 12 positions under active monitoring
 - At least $750,000 of collateral under monitoring, summed across monitored positions at report time
-- At least 10 alerts delivered to non-team users
+- Alerting active for at least 10 non-team users, with delivery demonstrated to each
 - At least 1 protocol or existing grantee confirming in writing that they would reference or integrate Belay
 
 Scale note: a full crawl of Granite and Zest found 58 unique wallets holding 62 economically meaningful positions worth $10.7M. These targets are set against that measured population, not against a hoped-for one. 12 monitored positions is roughly a fifth of every borrowing position on Stacks.
