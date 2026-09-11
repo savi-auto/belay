@@ -102,13 +102,13 @@ None.
 
 **Prior Stacks work**
 
-I build Clarity protocols. Three complete, tested codebases on Stacks, none grant-funded:
+I write Clarity. Public work at github.com/savi-auto:
 
-- **Weir.** Constant-product AMM for sBTC against a SIP-010 token with a built-in cumulative-price TWAP oracle. Three Clarity 4 contracts, 17-case test suite covering swaps, liquidity, and oracle accounting.
-- **Yieldsmith.** Yield tokenization splitting a yield-bearing sBTC position into Principal and Yield tokens. Five Clarity 4 contracts, 12 tests proving principal and yield reconcile to the exact vault balance.
-- **Writ.** Physically-settled, fully-collateralised sBTC options. One Clarity 4 contract, 26 tests covering full call and put lifecycles and collateral conservation under rounding.
+- **bitcoin-lending.** A 315-line Clarity lending protocol where Bitcoin holders post BTC as collateral and borrow against it, with collateral ratios, liquidation thresholds, and price-feed updates. Belay reads exactly these mechanics in live protocols; I have implemented them from the other side.
+- **Writ.** Physically-settled, fully-collateralised sBTC options. One Clarity 4 contract with 26 passing tests covering call and put lifecycles, pro-rata settlement, and collateral conservation under rounding.
+- **shielded-pool** and **trust-chain.** Further Clarity contracts covering a privacy pool and on-chain trust scoring.
 
-Weir and Yieldsmith were submitted in Q2 2026 and not selected. I disclose that deliberately: I ship working tested Clarity, and for Q3 I chose the problem by verifying what the ecosystem actually lacks rather than proposing another primitive.
+Belay is the strongest sample of current work: seven modules, 12 passing tests, and risk figures reproducible against live mainnet positions in one command.
 
 ---
 
@@ -154,7 +154,7 @@ Three things learned only by going to chain, each of which changed the design:
 
 Saviour Sunday, sole developer, Nigeria.
 
-Three complete Clarity protocols built and tested on Stacks: Weir (AMM with TWAP oracle, 17 tests), Yieldsmith (yield tokenization, 12 tests), Writ (physically-settled sBTC options, 26 tests). Plus this engine, already validated against live mainnet positions with 12 passing tests.
+Clarity protocols built on Stacks, public at github.com/savi-auto: bitcoin-lending, a 315-line collateralised lending contract with collateral ratios, liquidation thresholds and price-feed updates; Writ, physically-settled sBTC options with 26 passing tests; plus privacy-pool and trust-scoring contracts. And this engine, already validated against live mainnet positions with 12 passing tests.
 
 The work here is Clarity contract reading, risk math, and a small web surface, which is the work I already do. The hardest part, reading two protocols' state correctly and pricing collateral the way each protocol itself would, is done and demonstrable on any address in one command.
 
